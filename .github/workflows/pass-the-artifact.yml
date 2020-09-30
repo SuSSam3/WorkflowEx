@@ -1,4 +1,4 @@
-name: Pass the artifact
+name: Pass the Artifact
 
 on: [pull_request]
 
