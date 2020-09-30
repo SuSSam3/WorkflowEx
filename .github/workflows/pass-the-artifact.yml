@@ -1,10 +1,6 @@
-name: Pass the artifact
+name: Pass the Artifact
 
 on: [workflow_dispatch]
-    inputs:
-      name:
-        description: 'File Name'
-        required: fale
 
 jobs:
   job_1:
@@ -20,9 +16,21 @@ jobs:
           name: bundle
           path: hello.txt
 
-jobs:
- greet:
- runs-on: ubuntu-latest
- steps:
- - name: Send greeting
- run: echo "Hello ${{ github.event.inputs.name }}"
+  job_2:
+    name: Echo and modify the file
+    needs: job_1
+    runs-on: windows-latest
+    steps:
+      - name: Download the bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: bundle
+      - name: Echo and modify
+        run: |
+          cat hello.txt
+          echo "More" >> hello.txt
+      - name: Upload the file (again)
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundle
+          path: hello.txt
